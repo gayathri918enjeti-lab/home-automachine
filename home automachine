@@ -1,0 +1,80 @@
+# home-Components
+Arduino UNO
+HC-05 Bluetooth module
+2-channel relay module
+Bulb/light and fan
+Jumper wires
+Arduino code
+:::writing{variant="document" id="52736" title="Arduino Home Automation Code"}
+
+// Home Automation using Arduino UNO + HC-05 Bluetooth
+
+const int LIGHT_RELAY = 8;
+const int FAN_RELAY   = 9;
+
+char command;
+
+void setup()
+{
+  pinMode(LIGHT_RELAY, OUTPUT);
+  pinMode(FAN_RELAY, OUTPUT);
+
+  // Initially OFF
+  digitalWrite(LIGHT_RELAY, LOW);
+  digitalWrite(FAN_RELAY, LOW);
+
+  Serial.begin(9600);
+
+  Serial.println("Home Automation System Ready");
+  Serial.println("L = Light ON");
+  Serial.println("l = Light OFF");
+  Serial.println("F = Fan ON");
+  Serial.println("f = Fan OFF");
+}
+
+void loop()
+{
+  if (Serial.available() > 0)
+  {
+    command = Serial.read();
+
+    switch (command)
+    {
+      case 'L':
+        digitalWrite(LIGHT_RELAY, HIGH);
+        Serial.println("Light ON");
+        break;
+
+      case 'l':
+        digitalWrite(LIGHT_RELAY, LOW);
+        Serial.println("Light OFF");
+        break;
+
+      case 'F':
+        digitalWrite(FAN_RELAY, HIGH);
+        Serial.println("Fan ON");
+        break;
+
+      case 'f':
+        digitalWrite(FAN_RELAY, LOW);
+        Serial.println("Fan OFF");
+        break;
+
+      default:
+        Serial.println("Invalid Command");
+        break;
+    }
+  }
+}
+:::
+
+Bluetooth commands
+L → Light ON
+l → Light OFF
+F → Fan ON
+f → Fan OFF
+HC-05 connections: TX → Arduino RX, RX → Arduino TX, VCC → 5V, GND → GND.
+
+⚠️ For 230-V appliances, use a properly rated relay and safe electrical isolation. Mains wiring should be done by a qualified person.
+
+
